@@ -1,0 +1,11 @@
+extends layout
+
+block contenido
+  h2 Crear Nuevo Material
+  form(method="POST", action="/inventario/nuevo")
+    label(for="material") Material:
+    input(type="text", name="material", required)
+    br
+    label(for="stock") Stock:
+    input(type="number", name="stock", required)
+    button(type="submit") Guardar

@@ -1,0 +1,15 @@
+extends layout
+
+block contenido
+  h2 Crear Nuevo Pedido
+  form(method="POST", action="/pedidos/nuevo")
+    label(for="cliente") Cliente:
+    input(type="text", name="cliente", required)
+    br
+    label(for="pedido") Pedido:
+    input(type="text", name="pedido", required)
+    br
+    label(for="cantidad") Cantidad:
+    input(type="number", name="cantidad", required)
+    br
+    button(type="submit") Guardar

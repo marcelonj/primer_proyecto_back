@@ -1,0 +1,16 @@
+extends layout
+
+block contenido
+  h2 Inventario
+  if inventario.length
+    ul
+      each material in inventario
+        li
+          strong= material.material
+          br
+          span= material.stock 
+          br
+          form(method="POST", action=`/inventario/eliminar/${material.id}?_method=DELETE`)
+            button(type="submit") Eliminar
+  else
+    p No hay materiales registrados.

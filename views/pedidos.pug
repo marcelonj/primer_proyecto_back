@@ -1,0 +1,18 @@
+extends layout
+
+block contenido
+  h2 Lista de Pedidos
+  if pedidos.length
+    ul
+      each pedido in pedidos
+        li
+          strong= pedido.cliente
+          br
+          span= pedido.pedido 
+          br
+          span= pedido.cantidad
+          br
+          form(method="POST", action=`/pedidos/eliminar/${pedido.id}?_method=DELETE`)
+            button(type="submit") Eliminar
+  else
+    p No hay pedidos registrados.

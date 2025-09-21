@@ -1,0 +1,12 @@
+[
+  {
+    "id": 0,
+    "material": "Hamburguesas",
+    "stock": 100
+  },
+  {
+    "id": 2,
+    "material": "Panes",
+    "stock": "25"
+  }
+]

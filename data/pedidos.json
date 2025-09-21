@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "cliente": "Marcelo",
+    "pedido": "Hamburguesas",
+    "cantidad": 1
+  },
+  {
+    "id": 2,
+    "cliente": "Julio",
+    "pedido": "Tacos",
+    "cantidad": "1"
+  },
+  {
+    "id": 3,
+    "cliente": "Guillermo",
+    "pedido": "Hamburguesa",
+    "cantidad": "1"
+  }
+]
