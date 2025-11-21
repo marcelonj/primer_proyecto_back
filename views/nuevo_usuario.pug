@@ -1,0 +1,29 @@
+block contenido
+  h2 Crear Nuevo Usuario
+  form(method="POST", action="/users/nuevo")
+    label(for="usuario") Usuario:
+    input(type="text", name="usuario", required)
+    br
+    label(for="nombre") Nombre:
+    input(type="text", name="nombre", required)
+    br
+    label(for="password") Contraseña:
+    input(type="password", name="password", required)
+    br
+    label(for="rol") Rol:
+    select(name="rol", required)
+      option(value="administrador") administrador
+      option(value="cocinero") cocinero
+      option(value="repartidor") repartidor
+      option(value="mozo") mozo
+      option(value="encargado de stock") encargado de stock
+    br
+    label(for="area") Area:
+    select(name="area", required)
+      option(value="Cocina") Cocina
+      option(value="Reparto") Reparto
+      option(value="Salón / Atención al cliente") Salón / Atención al cliente
+      option(value="Control de Inventario") Control de Inventario
+      option(value="Administración") Administración
+    br
+    button(type="submit") Guardar
