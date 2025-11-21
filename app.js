@@ -5,8 +5,27 @@ import methodOverride from 'method-override';
 import pedidosRouter from './routes/pedidosRouter.js';
 import inventarioRouter from './routes/inventarioRouter.js';
 import menuRouter from './routes/menuRouter.js';
+import usersRouter from './routes/usersRouter.js';
+import dotenv from 'dotenv'
+import mongoose from 'mongoose';
+
+dotenv.config();
 
 const app = express();
+const url_mongo = process.env.URL_MONGO;
+
+// Conexion a la base de datos
+const connectDB = async () => {
+    try {
+        await mongoose.connect(url_mongo);
+        console.log('Connected to Database');
+    } catch (error) {
+        console.error('Database connection failed:', error.message);
+        process.exit(1); 
+    }
+};
+
+connectDB();
 
 // Configuración de __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +46,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', menuRouter);
 app.use('/pedidos/', pedidosRouter);
 app.use('/inventario/', inventarioRouter);
+app.use('/users/', usersRouter);
 
 // Servidor
 app.listen(3000, () => console.log('Servidor en http://localhost:3000/'));
