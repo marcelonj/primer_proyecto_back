@@ -24,7 +24,7 @@ async function login(req, res) {
             rol: usuario.rol
         };
 
-        const token = jsonwebtoken.sign(userForToken, process.env.SECRET);
+        const token = jsonwebtoken.sign(userForToken, process.env.SECRET, { expiresIn: "30m" });
         res.status(200).send(token);
     }
     catch{

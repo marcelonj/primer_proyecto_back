@@ -2,12 +2,13 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
+import jwtverificator from './middleware/jwtverificator.js';
 import pedidosRouter from './routes/pedidosRouter.js';
 import inventarioRouter from './routes/inventarioRouter.js';
 import menuRouter from './routes/menuRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import loginRouter from './routes/loginRouter.js';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 dotenv.config();
@@ -35,6 +36,7 @@ const __dirname = path.dirname(__filename);
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(jwtverificator)
 
 app.use(methodOverride('_method')); // <-- permite DELETE desde formularios
 app.use(express.static(path.join(__dirname, 'public')));
