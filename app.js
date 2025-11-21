@@ -6,6 +6,7 @@ import pedidosRouter from './routes/pedidosRouter.js';
 import inventarioRouter from './routes/inventarioRouter.js';
 import menuRouter from './routes/menuRouter.js';
 import usersRouter from './routes/usersRouter.js';
+import loginRouter from './routes/loginRouter.js';
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
 
@@ -44,6 +45,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Rutas
 app.use('/', menuRouter);
+app.use('/login/', loginRouter);
 app.use('/pedidos/', pedidosRouter);
 app.use('/inventario/', inventarioRouter);
 app.use('/users/', usersRouter);
