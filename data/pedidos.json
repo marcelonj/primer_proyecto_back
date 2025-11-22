@@ -2,10 +2,10 @@
   {
     "id": 1,
     "cliente": "Carlos",
-    "pedido": "empanadas de carne",
-    "cantidad": "10",
-    "tipo": "Presencial",
-    "estado": "Listo",
-    "asignacion": "repartidor"
+    "pedido": "32",
+    "cantidad": "23",
+    "tipo": "Télefono",
+    "estado": "En preparación",
+    "asignacion": "cocina"
   }
 ]
