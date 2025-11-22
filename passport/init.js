@@ -3,16 +3,16 @@ import userModel from '../models/userModel.js';
 
 function initPassport (passport) {
     passport.serializeUser(function (user, done) {
-        console.log('serializing user: ');
-        console.log(user);
-        done(null, user._id);
+        done(null, user.id);
     });
 
-    passport.deserializeUser(function (id, done) {
-        userModel.User.findById(id, function (err, user) {
-            console.log('deserializing user:', user);
-            done(err, user);
-        });
+    passport.deserializeUser(async function (id, done) {
+        try {
+            const user = await userModel.User.findById(id);
+            done(null, user);
+        } catch (err) {
+            done(err, null);
+        }
     });
     login(passport);
 };

@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
+import passport from 'passport';
 import userModel from "../models/userModel.js";
+import { log } from 'console';
 
 async function login(req, res) {
     const body = req.body;
@@ -36,6 +38,15 @@ async function mostrarLogin(req, res) {
     res.render('login', { titulo: 'Iniciar sesión' });
 }
 
-const loginController = {login, mostrarLogin};
+async function loginPassport(req, res, next) {
+    passport.authenticate('login', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    })(req, res, next);
+}
+
+
+const loginController = {login, mostrarLogin, loginPassport};
 
 export default loginController;
