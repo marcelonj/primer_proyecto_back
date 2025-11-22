@@ -5,14 +5,41 @@ async function mostrarPedidos(req, res) {
   res.render('pedidos', { titulo: 'Lista de Pedidos', pedidos });
 }
 
+async function mostrarEstadoPedido(req, res) {
+  const id = parseInt(req.params.id); // obtener el id de la URL
+  const pedidos = await pedidosModelo.obtenerPedidos();
+  const pedido = pedidos.find(p => p.id === id);
+
+  if (!pedido) {
+    return res.status(404).send('Pedido no encontrado');
+  }
+
+  res.render('estado_pedido', { titulo: 'Estado del Pedido', pedido });
+}
+
+async function mostrarAsignacionPedidos(req, res){
+  const id = parseInt(req.params.id); // obtener el id de la URL
+  const pedidos = await pedidosModelo.obtenerPedidos();
+  const pedido = pedidos.find(p => p.id === id);
+
+  if (!pedido) {
+    return res.status(404).send('Pedido no encontrado');
+  }
+
+  res.render('asignar_pedido', { titulo: 'Asignar Pedido', pedido });
+}
+
 function formularioNuevoPedido(req, res) {
   res.render('nuevo_pedido', { titulo: 'Nuevo Pedido' });
 }
 
 async function guardarPedido(req, res) {
-  const { cliente, pedido, cantidad } = req.body;
-  if (!cliente || !pedido || !cantidad) return res.status(400).send('Cliente, pedido y cantidad son requeridos');
-  await pedidosModelo.agregarPedido(cliente, pedido, cantidad);
+  
+  const { cliente, pedido, cantidad, tipo, } = req.body;
+  const estado = "En preparación"
+  const asignacion = "Ninguno"
+  if (!cliente || !pedido || !cantidad || !tipo ) return res.status(400).send('Cliente, pedido, cantidad y tipo son requeridos');
+  await pedidosModelo.agregarPedido(cliente, pedido, cantidad, tipo, estado, asignacion);
   res.redirect('/pedidos/');
 }
 
@@ -20,6 +47,24 @@ async function eliminarPedidos(req, res) {
   const id = parseInt(req.params.id);
   await pedidosModelo.eliminarPedidoPorId(id);
   res.redirect('/pedidos/');
+}
+
+async function cambiarEstadoPedido(req, res) {
+  const id = parseInt(req.params.id);
+  const { estado } = req.body;
+
+  if (!estado) return res.status(400).send('El estado es requerido');
+  await pedidosModelo.ModificarEstado(id, estado);
+  res.redirect('/pedidos/')
+}
+
+async function AsignarPedido(req, res){
+  const id = parseInt(req.params.id);
+  const { asignacion } = req.body;
+
+  if (!asignacion) return res.status(400).send('La asignación es requerido');
+  await pedidosModelo.cambiarAsignaciónDePedido(id, asignacion);
+  res.redirect('/pedidos/')
 }
 
 async function modificarPedidos(req, res) {
@@ -38,5 +83,5 @@ async function modificarPedidos(req, res) {
   }
 }
 
-const pedidosController = { mostrarPedidos, formularioNuevoPedido, guardarPedido, eliminarPedidos, modificarPedidos };
+const pedidosController = { mostrarPedidos, formularioNuevoPedido, guardarPedido, eliminarPedidos, modificarPedidos, mostrarEstadoPedido, cambiarEstadoPedido, AsignarPedido, mostrarAsignacionPedidos };
 export default pedidosController;

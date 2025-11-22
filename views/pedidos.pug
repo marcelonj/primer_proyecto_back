@@ -6,13 +6,31 @@ block contenido
     ul
       each pedido in pedidos
         li
+        label Nombre:
           strong= pedido.cliente
           br
+          label Pedido:
           span= pedido.pedido 
           br
+          label Cantidad:
           span= pedido.cantidad
+          br
+          label Tipo de pedido:
+          span= pedido.tipo
+          br
+          label Estado del pedido:
+          span= pedido.estado
+          br
+          label Asignación del pedido:
+          span= pedido.asignacion
+          br
+          a(href=`/pedidos/estado_pedido/${pedido.id}`) Cambiar estado de pedido
+          br
+          a(href=`/pedidos/asignar_pedido/${pedido.id}`) Asignar pedido
           br
           form(method="POST", action=`/pedidos/eliminar/${pedido.id}?_method=DELETE`)
             button(type="submit") Eliminar
+          br
+          
   else
     p No hay pedidos registrados.

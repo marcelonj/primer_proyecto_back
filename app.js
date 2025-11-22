@@ -9,23 +9,23 @@ import usersRouter from './routes/usersRouter.js';
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
 
-dotenv.config();
+// dotenv.config();
 
 const app = express();
-const url_mongo = process.env.URL_MONGO;
+// const url_mongo = process.env.URL_MONGO;
 
 // Conexion a la base de datos
-const connectDB = async () => {
-    try {
-        await mongoose.connect(url_mongo);
-        console.log('Connected to Database');
-    } catch (error) {
-        console.error('Database connection failed:', error.message);
-        process.exit(1); 
-    }
-};
+// const connectDB = async () => {
+//     try {
+//         await mongoose.connect(url_mongo);
+//         console.log('Connected to Database');
+//     } catch (error) {
+//         console.error('Database connection failed:', error.message);
+//         process.exit(1); 
+//     }
+// };
 
-connectDB();
+// connectDB();
 
 // Configuración de __dirname
 const __filename = fileURLToPath(import.meta.url);

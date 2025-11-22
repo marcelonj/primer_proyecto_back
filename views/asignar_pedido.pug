@@ -1,0 +1,16 @@
+extends layout
+
+block contenido
+  h2 Asignar Pedido
+  p Pedido: #{pedido.pedido} - Cliente: #{pedido.cliente}
+
+  form(method="POST", action=`/pedidos/asignar_pedido/${pedido.id}?_method=PUT`)
+    label Asignar a:
+    br
+    input(type="radio", name="asignacion", value="cocina" ,required)
+    |  Cocina
+    br
+    input(type="radio", name="asignacion", value="repartidor",required)
+    |  Repartidor
+    br
+    button(type="submit") Guardar

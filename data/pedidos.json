@@ -1,20 +1,11 @@
 [
   {
     "id": 1,
-    "cliente": "Marcelo",
-    "pedido": "Hamburguesas",
-    "cantidad": 1
-  },
-  {
-    "id": 2,
-    "cliente": "Julio",
-    "pedido": "Tacos",
-    "cantidad": "1"
-  },
-  {
-    "id": 3,
-    "cliente": "Guillermo",
-    "pedido": "Hamburguesa",
-    "cantidad": "1"
+    "cliente": "Carlos",
+    "pedido": "empanadas de carne",
+    "cantidad": "10",
+    "tipo": "Presencial",
+    "estado": "Listo",
+    "asignacion": "repartidor"
   }
 ]
