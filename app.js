@@ -3,18 +3,25 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
 import jwtverificator from './middleware/jwtverificator.js';
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import session from 'express-session';
+
 import pedidosRouter from './routes/pedidosRouter.js';
 import inventarioRouter from './routes/inventarioRouter.js';
 import menuRouter from './routes/menuRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import loginRouter from './routes/loginRouter.js';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+
+import initPassport from './passport/init.js';
 
 dotenv.config();
 
 const app = express();
 const url_mongo = process.env.URL_MONGO;
+const secret = process.env.SECRET;
 
 // Conexion a la base de datos
 const connectDB = async () => {
@@ -36,7 +43,13 @@ const __dirname = path.dirname(__filename);
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(jwtverificator)
+app.use(jwtverificator);
+app.use(cookieParser());
+app.use(session({ secret: secret }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+initPassport(passport);
 
 app.use(methodOverride('_method')); // <-- permite DELETE desde formularios
 app.use(express.static(path.join(__dirname, 'public')));
