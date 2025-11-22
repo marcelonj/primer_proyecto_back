@@ -31,9 +31,18 @@ userSchema.set('toJSON', {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
         delete returnedObject.__v;
-        delete returnedObject.passwordHash;
     }
 });
 
+async function recuperarUsuario(usuario) {
+    try {
+        const user = await User.findOne({ username: usuario });
+        return user;
+    } catch (error) {
+        throw new Error("Usuario no encontrado");
+    }
+}
+
 const User = mongoose.model('User', userSchema);
-export default User;
+const userModel = {User, recuperarUsuario}
+export default userModel;

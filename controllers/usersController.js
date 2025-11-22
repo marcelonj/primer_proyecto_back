@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
-import User from "../models/userModel.js";
+import userModel from "../models/userModel.js";
 
 async function registrarUsuario(req, res) {
     const body = req.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
-    const user = new User({
+    const user = new userModel.User({
         username: body.usuario,
         name: body.nombre,
         passwordHash,
