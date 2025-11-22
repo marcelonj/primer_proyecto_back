@@ -32,6 +32,10 @@ async function login(req, res) {
     }
 }
 
-const loginController = {login};
+async function mostrarLogin(req, res) {
+    res.render('login', { titulo: 'Iniciar sesión' });
+}
+
+const loginController = {login, mostrarLogin};
 
 export default loginController;

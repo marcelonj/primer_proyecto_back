@@ -43,7 +43,6 @@ const __dirname = path.dirname(__filename);
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(jwtverificator);
 app.use(cookieParser());
 app.use(session({ secret: secret }));
 app.use(passport.initialize());
