@@ -24,12 +24,15 @@ block contenido
           label Asignación del pedido:
           span= pedido.asignacion
           br
-          a(href=`/pedidos/estado_pedido/${pedido.id}`) Cambiar estado de pedido
+          a(href=`/pedidos/modificar_pedido/${pedido._id}`) Modificar pedido
           br
-          a(href=`/pedidos/asignar_pedido/${pedido.id}`) Asignar pedido
+          a(href=`/pedidos/estado_pedido/${pedido._id}`) Cambiar estado de pedido
           br
-          form(method="POST", action=`/pedidos/eliminar/${pedido.id}?_method=DELETE`)
+          a(href=`/pedidos/asignar_pedido/${pedido._id}`) Asignar pedido
+          br
+          form(method="POST", action=`/pedidos/eliminar/${pedido._id}?_method=DELETE`)
             button(type="submit") Eliminar
+
           br
           
   else

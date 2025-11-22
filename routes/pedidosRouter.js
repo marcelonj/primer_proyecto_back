@@ -11,7 +11,9 @@ router.put('/asignar_pedido/:id', pedidosController.AsignarPedido);
 router.get('/nuevo', pedidosController.formularioNuevoPedido);
 router.post('/nuevo', pedidosController.guardarPedido);
 router.delete('/eliminar/:id', pedidosController.eliminarPedidos);
-router.put('/modificar', pedidosController.modificarPedidos);
+router.get('/modificar_pedido/:id', pedidosController.formularioModificarPedido);
+router.put('/modificar/:id', pedidosController.modificarPedidos);
+
 
 export default router;
 
