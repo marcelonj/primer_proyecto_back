@@ -7,7 +7,9 @@ block contenido
     input(type="text", name="cliente", required)
     br
     label(for="pedido") Pedido:
-    input(type="text", name="pedido", required)
+    select(name="pedido", required)
+      each plato in platos
+        option(value=plato.nombre)= plato.nombre
     br
     label(for="cantidad") Cantidad:
     input(type="number", name="cantidad", required)

@@ -2,7 +2,11 @@ import inventarioModelo from '../models/inventarioModel.js';
 
 async function mostrarInventario(req, res) {
   const inventario = await inventarioModelo.obtenerInventario();
-  res.render('inventario', { titulo: 'Inventario', inventario });
+  const inventarioConAlertas = inventario.map(item => ({
+    ...item,
+    bajoStock: parseInt(item.stock) < 10
+  }));
+  res.render('inventario', { titulo: 'Inventario', inventario: inventarioConAlertas });
 }
 
 function formularioNuevoInventario(req, res) {

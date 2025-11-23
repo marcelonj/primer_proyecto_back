@@ -8,46 +8,78 @@ const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, '../data/inventario.json');
 
 async function obtenerInventario() {
-  try {
-    const data = await readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+	try {
+		const data = await readFile(filePath, 'utf-8');
+		return JSON.parse(data);
+	} catch {
+		return [];
+	}
 }
 
 async function guardarInventario(inventario) {
-  await writeFile(filePath, JSON.stringify(inventario, null, 2));
+	await writeFile(filePath, JSON.stringify(inventario, null, 2));
 }
 
 async function agregarInventario(material, stock) {
-  const inventario = await obtenerInventario();
-	let bandera = false
-	//Comprobamos si el material ya existe en el inventario y le sumamos el stock
-	inventario.forEach(material => {
-		if(material.material == material){
-			material.stock = material.stock + stock;
-			bandera = true
-		}
-	});
-	// Si el material no se encontraba en el inventario se agrega como un nuevo item
-	if(!bandera){
+	const inventario = await obtenerInventario();
+	const stockNum = parseInt(stock);
+
+	const itemExistente = inventario.find(item => item.material === material);
+
+	if (itemExistente) {
+		itemExistente.stock = parseInt(itemExistente.stock) + stockNum;
+	} else {
 		const nuevoInventario = {
-			id: inventario.length ? inventario[inventario.length - 1].id + 1 : 1,
+			id: inventario.length ? Math.max(...inventario.map(i => i.id)) + 1 : 1,
 			material,
-			stock
+			stock: stockNum
 		};
 		inventario.push(nuevoInventario);
 	}
-  await guardarInventario(inventario);
+	await guardarInventario(inventario);
 }
 
 async function eliminarInventarioPorId(id) {
-  const inventario = await obtenerInventario();
-  const actualizados = inventario.filter(e => e.id !== id);
-  await guardarInventario(actualizados);
+	const inventario = await obtenerInventario();
+	const actualizados = inventario.filter(e => e.id !== id);
+	await guardarInventario(actualizados);
+}
+
+async function consumirStock(material, cantidad) {
+	const inventario = await obtenerInventario();
+	const item = inventario.find(i => i.material === material);
+
+	if (!item) {
+		throw new Error(`Material ${material} no encontrado en inventario.`);
+	}
+
+	if (parseInt(item.stock) < cantidad) {
+		throw new Error(`Stock insuficiente de ${material}.`);
+	}
+
+	item.stock = parseInt(item.stock) - cantidad;
+	await guardarInventario(inventario);
+}
+
+async function verificarDisponibilidad(ingredientes) {
+	// ingredientes: [{ material: "Panes", cantidad: 1 }, ...]
+	const inventario = await obtenerInventario();
+
+	for (const ingrediente of ingredientes) {
+		const item = inventario.find(i => i.material === ingrediente.material);
+		if (!item || parseInt(item.stock) < ingrediente.cantidad) {
+			return false;
+		}
+	}
+	return true;
 }
 
 // Exportar todas las funciones como un objeto
-const inventarioModelo = { obtenerInventario, agregarInventario, eliminarInventarioPorId };
+const inventarioModelo = {
+	obtenerInventario,
+	agregarInventario,
+	eliminarInventarioPorId,
+	consumirStock,
+	verificarDisponibilidad
+};
 export default inventarioModelo;
