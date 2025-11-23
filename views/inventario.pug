@@ -8,7 +8,9 @@ block contenido
         li
           strong= material.material
           br
-          span= material.stock 
+          span Stock: #{material.stock}
+          if material.bajoStock
+            span(style="color: red; font-weight: bold; margin-left: 10px;") (BAJO STOCK) 
           br
           form(method="POST", action=`/inventario/eliminar/${material.id}?_method=DELETE`)
             button(type="submit") Eliminar

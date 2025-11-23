@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "nombre": "Hamburguesa Simple",
+        "precio": 1000,
+        "ingredientes": [
+            {
+                "material": "Panes",
+                "cantidad": 1
+            },
+            {
+                "material": "Hamburguesas",
+                "cantidad": 1
+            }
+        ]
+    }
+]
