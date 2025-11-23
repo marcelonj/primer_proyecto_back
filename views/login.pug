@@ -1,10 +1,24 @@
+extends layout
+
 block contenido
-  h2 Iniciar sesión
-  form(method="POST", action="/login")
-    label(for="username") Usuario:
-    input(type="text", name="username", required)
-    br
-    label(for="password") Contraseña:
-    input(type="password", name="password", required)
-    br
-    button(type="submit") Iniciar sesión
+  .container.mt-5
+    .row.justify-content-center
+      .col-md-6.col-lg-4
+        .card
+          .card-body
+            h2.mb-4.text-center Iniciar sesión
+
+            // Mensajes flash (opcional)
+            if message
+              .alert.alert-danger= message
+
+            form(method="POST", action="/login")
+              .mb-3
+                label.form-label(for="username") Usuario
+                input.form-control(type="text", name="username", id="username", required)
+
+              .mb-3
+                label.form-label(for="password") Contraseña
+                input.form-control(type="password", name="password", id="password", required)
+
+              button.btn.btn-primary.w-100(type="submit") Entrar
