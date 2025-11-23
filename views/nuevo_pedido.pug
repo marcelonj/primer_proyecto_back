@@ -13,5 +13,18 @@ block contenido
     br
     label(for="cantidad") Cantidad:
     input(type="number", name="cantidad", required)
+    // NUEVO: Tipo de pedido
     br
+    label Tipo de pedido:
+    br
+    input(type="radio", name="tipo", value="Presencial", required)
+    |  Presencial 
+    br
+    input(type="radio", name="tipo", value="Télefono")
+    |  Telefónico
+    br
+    input(type="radio", name="tipo", value="Aplicación externa")
+    |  Por aplicación externa
+    br
+ 
     button(type="submit") Guardar

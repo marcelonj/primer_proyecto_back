@@ -1,0 +1,33 @@
+extends layout
+
+block contenido
+  h2 Modificar Pedido
+
+  form(method="POST", action=`/pedidos/modificar/${pedido._id}?_method=PUT`)
+    input(type="hidden", name="id", value=pedido._id)
+
+    label Nombre:
+    input(type="text", name="cliente", value=pedido.cliente, required)
+    br
+
+    label Pedido:
+    input(type="text", name="pedido", value=pedido.pedido, required)
+    br
+
+    label Cantidad:
+    input(type="number", name="cantidad", value=pedido.cantidad, required)
+    br
+
+    label Tipo de pedido:
+    br
+    input(type="radio", name="tipo", value="Presencial", checked=(pedido.tipo === "Presencial"))
+    | Presencial
+    br
+    input(type="radio", name="tipo", value="Télefono", checked=(pedido.tipo === "Télefono"))
+    | Telefónico
+    br
+    input(type="radio", name="tipo", value="Aplicación externa", checked=(pedido.tipo === "Aplicación externa"))
+    | Por aplicación externa
+    br
+
+    button(type="submit") Guardar cambios

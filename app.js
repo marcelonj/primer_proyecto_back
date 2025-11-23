@@ -17,6 +17,7 @@ import loginRouter from './routes/loginRouter.js';
 import signoutRouter from './routes/signoutRouter.js'
 
 import authChecker from './middleware/authChecker.js';
+import rolChecker from './middleware/rolChecker.js';
 
 import initPassport from './passport/init.js';
 
@@ -70,8 +71,10 @@ app.use('/login/', loginRouter);
 app.use('/', authChecker, menuRouter);
 app.use('/pedidos/', pedidosRouter);
 app.use('/inventario/', inventarioRouter);
-app.use('/users/', usersRouter);
+app.use('/users/', rolChecker, usersRouter);
 app.use('/signout/', signoutRouter);
 
 // Servidor
 app.listen(3000, () => console.log('Servidor en http://localhost:3000/'));
+
+

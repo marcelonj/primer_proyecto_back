@@ -1,0 +1,41 @@
+extends layout
+
+block contenido
+  h2 Estado del Pedido
+  if pedido
+    p
+      strong Cliente: 
+      | #{pedido.cliente}
+    p
+      strong Pedido: 
+      | #{pedido.pedido}
+    p
+      strong Cantidad: 
+      | #{pedido.cantidad}
+    p
+      strong Tipo: 
+      | #{pedido.tipo}
+    p
+      strong Estado del pedido: 
+      | #{pedido.estado}
+    p
+      strong Nuevo estado del pedido: 
+    form(method="POST", action=`/pedidos/estado_pedido/${pedido.id}?_method=PUT`)
+      input(type="radio", name="estado", value="Listo", required)
+      |  Listo 
+      br
+      input(type="radio", name="estado", value="En camino", required)
+      |  En camino
+      br
+      input(type="radio", name="estado", value="Entregado", required)
+      |  Entregado
+      br
+      br
+      button(type="submit") Guardar
+    br
+    br
+    a(href='/pedidos/') Volver a la lista de pedidos
+  else
+    p Pedido no encontrado
+
+
