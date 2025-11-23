@@ -26,7 +26,7 @@ async function mostrarAsignacionPedidos(req, res) {
 
 async function formularioNuevoPedido(req, res) {
   const platos = await platosModelo.obtenerPlatos();
-  res.render('nuevo_pedido', { titulo: 'Nuevo Pedido', platos });
+  res.render('nuevo_pedido', { titulo: 'Crear Nuevo Pedido', platos });
 }
 
 async function guardarPedido(req, res) {

@@ -2,29 +2,32 @@ extends layout
 
 block contenido
   h2 Crear Nuevo Pedido
+
   form(method="POST", action="/pedidos/nuevo")
     label(for="cliente") Cliente:
     input(type="text", name="cliente", required)
     br
+
     label(for="pedido") Pedido:
     select(name="pedido", required)
       each plato in platos
         option(value=plato.nombre)= plato.nombre
     br
+
     label(for="cantidad") Cantidad:
-    input(type="number", name="cantidad", required)
-    // NUEVO: Tipo de pedido
+    input(type="number", name="cantidad", min="1", required)
     br
+
     label Tipo de pedido:
     br
-    input(type="radio", name="tipo", value="Presencial", required)
-    |  Presencial 
+    input(type="radio", name="tipo", value="Presencial", checked) 
+    |  Presencial
     br
-    input(type="radio", name="tipo", value="Télefono")
+    input(type="radio", name="tipo", value="Telefonico")
     |  Telefónico
     br
-    input(type="radio", name="tipo", value="Aplicación externa")
+    input(type="radio", name="tipo", value="Aplicacion")
     |  Por aplicación externa
     br
- 
+
     button(type="submit") Guardar
