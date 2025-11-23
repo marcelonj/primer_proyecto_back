@@ -1,56 +1,65 @@
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
-// Ruta del archivo JSON
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, '../data/pedidos.json');
+import mongoose from "mongoose";
 
+const pedidosSchema = new mongoose.Schema({
+  cliente: { type: String, required: true },
+  pedido: { type: String, required: true },
+  cantidad: { type: Number, required: true },
+  tipo: { type: String, required: true },
+  estado: { type: String, default: "En preparación" },
+  asignacion: { type: String, default: "Ninguno" },
+}, { timestamps: true });
+
+const Pedido = mongoose.model("Pedido", pedidosSchema);
+
+
+// Obtener todos los pedidos
 async function obtenerPedidos() {
-  try {
-    const data = await readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+  return await Pedido.find().sort({ createdAt: -1 });
 }
 
-async function guardarPedidos(pedidos) {
-	await writeFile(filePath, JSON.stringify(pedidos, null, 2));
+// Agregar pedido nuevo
+async function agregarPedido(cliente, pedido, cantidad, tipo, estado, asignacion) {
+  await Pedido.create({ cliente, pedido, cantidad, tipo, estado, asignacion });
 }
 
-async function agregarPedido(cliente, pedido, cantidad) {
-  const pedidos = await obtenerPedidos();
-  const nuevoPedido = {
-    id: pedidos.length ? pedidos[pedidos.length - 1].id + 1 : 1,
-    cliente,
-    pedido,
-    cantidad
-  };
-  pedidos.push(nuevoPedido);
-  await guardarPedidos(pedidos);
-}
-
+// Eliminar por ID
 async function eliminarPedidoPorId(id) {
-  const pedidos = await obtenerPedidos();
-  const actualizados = pedidos.filter(e => e.id !== id);
-  await guardarPedidos(actualizados);
+  await Pedido.findByIdAndDelete(id);
 }
 
-async function modificarPedidoPorId(id, cliente, pedido, cantidad) {
-  const pedidos = await obtenerPedidos();
-  const pedidoEncontrado = pedidos.find(p => p.id === id);
-  if (!pedidoEncontrado) {
-    throw new Error('El pedido con el ID especificado no fue encontrado.');
-  }
-  pedidoEncontrado.cliente = cliente;
-  pedidoEncontrado.pedido = pedido;
-  pedidoEncontrado.cantidad = cantidad;
-  guardarPedidos(pedidos)
-  return true
+// Cambiar estado
+async function ModificarEstado(id, estado) {
+  const result = await Pedido.findByIdAndUpdate(id, { estado });
+  if (!result) throw new Error("Pedido no encontrado");
+  return true;
 }
 
-// Exportar todas las funciones como un objeto
-const pedidosModelo = { obtenerPedidos, agregarPedido, eliminarPedidoPorId, modificarPedidoPorId };
-export default pedidosModelo;
+// Cambiar asignación
+async function cambiarAsignaciónDePedido(id, asignacion) {
+  const result = await Pedido.findByIdAndUpdate(id, { asignacion });
+  if (!result) throw new Error("Pedido no encontrado");
+  return true;
+}
+
+
+async function modificarPedidoPorId(id, cliente, pedido, cantidad, tipo) {
+  const result = await Pedido.findByIdAndUpdate(
+    id,
+    { cliente, pedido, cantidad, tipo },
+    { new: true }
+  );
+
+  if (!result) throw new Error("El pedido con el ID especificado no fue encontrado.");
+  return true;
+}
+
+
+export default {
+  obtenerPedidos,
+  agregarPedido,
+  eliminarPedidoPorId,
+  modificarPedidoPorId,
+  ModificarEstado,
+  cambiarAsignaciónDePedido,
+};
