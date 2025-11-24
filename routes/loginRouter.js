@@ -1,8 +1,23 @@
 import express from 'express';
-const router = express.Router();
-import loginController from "../controllers/loginController.js";
+import passport from 'passport';
 
-router.get('/', loginController.mostrarLogin);
-router.post('/', loginController.loginPassport);
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.render('login', {
+        titulo: 'Iniciar sesión',
+        message: req.flash('error')
+    });
+});
+
+
+router.post(
+    '/',
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    })
+);
 
 export default router;

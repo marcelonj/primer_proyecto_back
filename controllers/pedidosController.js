@@ -1,5 +1,7 @@
 // controllers/pedidosController.js
 import pedidosModelo from "../models/pedidosModel.js";
+import platosModelo from '../models/platosModel.js';
+import inventarioModelo from '../models/inventarioModel.js';
 
 async function mostrarPedidos(req, res) {
   const pedidos = await pedidosModelo.obtenerPedidos();
@@ -22,19 +24,42 @@ async function mostrarAsignacionPedidos(req, res) {
   res.render("asignar_pedido", { titulo: "Asignar Pedido", pedido });
 }
 
-function formularioNuevoPedido(req, res) {
-  res.render("nuevo_pedido", { titulo: "Nuevo Pedido" });
+async function formularioNuevoPedido(req, res) {
+  const platos = await platosModelo.obtenerPlatos();
+  res.render('nuevo_pedido', { titulo: 'Crear Nuevo Pedido', platos });
 }
 
 async function guardarPedido(req, res) {
   const { cliente, pedido, cantidad, tipo } = req.body;
+  const cantidadNum = parseInt(cantidad);
+
   const estado = "En preparación";
   const asignacion = "Ninguno";
 
   if (!cliente || !pedido || !cantidad || !tipo)
     return res.status(400).send("Cliente, pedido, cantidad y tipo son requeridos");
 
-  await pedidosModelo.agregarPedido(cliente, pedido, cantidad, tipo, estado, asignacion);
+
+  // Verificar stock
+  const plato = await platosModelo.obtenerPlatoPorNombre(pedido);
+  if (plato) {
+    const ingredientesNecesarios = plato.ingredientes.map(i => ({
+      material: i.material,
+      cantidad: i.cantidad * cantidadNum
+    }));
+
+    const disponible = await inventarioModelo.verificarDisponibilidad(ingredientesNecesarios);
+    if (!disponible) {
+      return res.status(400).send('No hay stock suficiente para realizar este pedido.');
+    }
+
+    // Consumir stock
+    for (const ingrediente of ingredientesNecesarios) {
+      await inventarioModelo.consumirStock(ingrediente.material, ingrediente.cantidad);
+    }
+  }
+
+  await pedidosModelo.agregarPedido(cliente, pedido, cantidadNum, tipo, estado, asignacion);
   res.redirect("/pedidos/");
 }
 
