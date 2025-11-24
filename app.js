@@ -14,7 +14,9 @@ import inventarioRouter from './routes/inventarioRouter.js';
 import menuRouter from './routes/menuRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import loginRouter from './routes/loginRouter.js';
-import signoutRouter from './routes/signoutRouter.js'
+import signoutRouter from './routes/signoutRouter.js';
+import platosRouter from './routes/platosRouter.js';
+
 
 import authChecker from './middleware/authChecker.js';
 import rolChecker from './middleware/rolChecker.js';
@@ -80,6 +82,8 @@ app.use('/pedidos/', pedidosRouter);
 app.use('/inventario/', inventarioRouter);
 app.use('/users/', rolChecker, usersRouter);
 app.use('/signout/', signoutRouter);
+app.use('/platos/', platosRouter);
+
 
 // Servidor
 app.listen(3000, () => console.log('Servidor en http://localhost:3000/'));
