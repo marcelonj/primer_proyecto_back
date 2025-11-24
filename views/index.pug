@@ -2,5 +2,18 @@ extends layout
 
 block contenido
   h2 Menu
-  a(href='/pedidos/') Pedidos |
-  a(href='/inventario/') Inventario
+  
+  if platos && platos.length
+    ul
+      each plato in platos
+        li
+          strong= plato.nombre
+          |  - $#{plato.precio}
+          if !plato.disponible
+            span(style="color: red; margin-left: 10px;") (Sin Stock)
+  else
+    p No hay platos disponibles.
+
+  br
+  a(href='/pedidos/') Ver Pedidos |
+  a(href='/inventario/') Ver Inventario

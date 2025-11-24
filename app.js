@@ -24,6 +24,7 @@ import initPassport from './passport/init.js';
 dotenv.config();
 
 const app = express();
+app.use(express.static('public'));
 const url_mongo = process.env.URL_MONGO;
 const secret = process.env.SECRET;
 
@@ -34,7 +35,7 @@ const connectDB = async () => {
         console.log('Connected to Database');
     } catch (error) {
         console.error('Database connection failed:', error.message);
-        process.exit(1); 
+        process.exit(1);
     }
 };
 
@@ -48,10 +49,10 @@ const __dirname = path.dirname(__filename);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(session({ 
+app.use(session({
     secret: secret,
-    resave: false,               
-    saveUninitialized: false     
+    resave: false,
+    saveUninitialized: false
 }));
 app.use(flash());
 app.use(passport.initialize());
@@ -59,8 +60,14 @@ app.use(passport.session());
 
 initPassport(passport);
 
-app.use(methodOverride('_method')); // <-- permite DELETE desde formularios
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.isAuthenticated ? req.isAuthenticated() : false;
+    next();
+});
+
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Configuración de vistas (Pug)
 app.set('view engine', 'pug');

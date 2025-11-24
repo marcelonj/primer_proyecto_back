@@ -1,28 +1,37 @@
 extends layout
 
 block contenido
-  h2 Crear Nuevo Pedido
-  form(method="POST", action="/pedidos/nuevo")
-    label(for="cliente") Cliente:
-    input(type="text", name="cliente", required)
-    br
-    label(for="pedido") Pedido:
-    input(type="text", name="pedido", required)
-    br
-    label(for="cantidad") Cantidad:
-    input(type="number", name="cantidad", required)
-    // NUEVO: Tipo de pedido
-    br
-    label Tipo de pedido:
-    br
-    input(type="radio", name="tipo", value="Presencial", required)
-    |  Presencial 
-    br
-    input(type="radio", name="tipo", value="Télefono")
-    |  Telefónico
-    br
-    input(type="radio", name="tipo", value="Aplicación externa")
-    |  Por aplicación externa
-    br
- 
-    button(type="submit") Guardar
+  .row
+    .col-md-8.col-lg-6
+      .card
+        .card-body
+          h2.mb-4 Crear Nuevo Pedido
+
+          form(method="POST", action="/pedidos/nuevo")
+            .mb-3
+              label.form-label(for="cliente") Cliente
+              input.form-control(type="text", name="cliente", required)
+
+            .mb-3
+              label.form-label(for="pedido") Pedido
+              select.form-select(name="pedido", required)
+                each plato in platos
+                  option(value=plato.nombre)= plato.nombre
+
+            .mb-3
+              label.form-label(for="cantidad") Cantidad
+              input.form-control(type="number", name="cantidad", min="1", required)
+
+            .mb-3
+              label.form-label Tipo de pedido
+              .form-check
+                input.form-check-input(type="radio", name="tipo", value="Presencial", checked)
+                label.form-check-label Presencial
+              .form-check
+                input.form-check-input(type="radio", name="tipo", value="Telefonico")
+                label.form-check-label Telefónico
+              .form-check
+                input.form-check-input(type="radio", name="tipo", value="Aplicacion")
+                label.form-check-label Por aplicación externa
+
+            button.btn.btn-primary(type="submit") Guardar

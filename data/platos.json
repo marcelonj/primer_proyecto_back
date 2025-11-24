@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "nombre": "Hamburguesa Simple",
+        "precio": 1000,
+        "ingredientes": [
+            {
+                "material": "Panes",
+                "cantidad": 1
+            },
+            {
+                "material": "Hamburguesas",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nombre": "Hamburguesa Completa",
+        "precio": 1500,
+        "ingredientes": [
+            {
+                "material": "Panes",
+                "cantidad": 1
+            },
+            {
+                "material": "Hamburguesas",
+                "cantidad": 1
+            },
+            {
+                "material": "Queso",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nombre": "Pizza Muzza",
+        "precio": 2000,
+        "ingredientes": [
+            {
+                "material": "pizza muzza",
+                "cantidad": 1
+            }
+        ]
+    }
+]

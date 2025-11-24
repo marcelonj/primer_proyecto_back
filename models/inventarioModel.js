@@ -1,53 +1,63 @@
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Ruta del archivo JSON
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, '../data/inventario.json');
+import Inventario from './mongo/inventarioSchema.js';
 
 async function obtenerInventario() {
-  try {
-    const data = await readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+	try {
+		const inventario = await Inventario.find().lean();
+		return inventario;
+	} catch (error) {
+		console.error('Error al obtener inventario:', error);
+		return [];
+	}
 }
 
-async function guardarInventario(inventario) {
-  await writeFile(filePath, JSON.stringify(inventario, null, 2));
-}
 
 async function agregarInventario(material, stock) {
-  const inventario = await obtenerInventario();
-	let bandera = false
-	//Comprobamos si el material ya existe en el inventario y le sumamos el stock
-	inventario.forEach(material => {
-		if(material.material == material){
-			material.stock = material.stock + stock;
-			bandera = true
-		}
-	});
-	// Si el material no se encontraba en el inventario se agrega como un nuevo item
-	if(!bandera){
-		const nuevoInventario = {
-			id: inventario.length ? inventario[inventario.length - 1].id + 1 : 1,
-			material,
-			stock
-		};
-		inventario.push(nuevoInventario);
+	const stockNum = parseInt(stock);
+
+	const itemExistente = await Inventario.findOne({ material });
+
+	if (itemExistente) {
+		itemExistente.stock += stockNum;
+		await itemExistente.save();
+	} else {
+		await Inventario.create({ material, stock: stockNum });
 	}
-  await guardarInventario(inventario);
 }
 
 async function eliminarInventarioPorId(id) {
-  const inventario = await obtenerInventario();
-  const actualizados = inventario.filter(e => e.id !== id);
-  await guardarInventario(actualizados);
+	await Inventario.findByIdAndDelete(id);
 }
 
-// Exportar todas las funciones como un objeto
-const inventarioModelo = { obtenerInventario, agregarInventario, eliminarInventarioPorId };
+async function consumirStock(material, cantidad) {
+	const item = await Inventario.findOne({ material });
+
+	if (!item) {
+		throw new Error(`Material ${material} no encontrado en inventario.`);
+	}
+
+	if (item.stock < cantidad) {
+		throw new Error(`Stock insuficiente de ${material}.`);
+	}
+
+	item.stock -= cantidad;
+	await item.save();
+}
+
+async function verificarDisponibilidad(ingredientes) {
+	for (const ingrediente of ingredientes) {
+		const item = await Inventario.findOne({ material: ingrediente.material });
+		if (!item || item.stock < ingrediente.cantidad) {
+			return false;
+		}
+	}
+	return true;
+}
+
+const inventarioModelo = {
+	obtenerInventario,
+	agregarInventario,
+	eliminarInventarioPorId,
+	consumirStock,
+	verificarDisponibilidad
+};
 export default inventarioModelo;
