@@ -1,0 +1,29 @@
+extends layout
+
+block contenido
+  .container.mt-4
+    h2.mb-3 Platos del menú
+
+    a.btn.btn-primary.mb-3(href="/platos/nuevo") + Nuevo plato
+
+    if platos.length
+      table.table.table-striped.table-hover
+        thead
+          tr
+            th Nombre
+            th Precio
+            th Ingredientes
+        tbody
+          each plato in platos
+            tr
+              td= plato.nombre
+              td $#{plato.precio}
+              td
+                if plato.ingredientes && plato.ingredientes.length
+                  ul.mb-0
+                    each ing in plato.ingredientes
+                      li #{ing.material} × #{ing.cantidad}
+                else
+                  span.text-muted Sin ingredientes cargados
+    else
+      .alert.alert-info No hay platos cargados todavía.
