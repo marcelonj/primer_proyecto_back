@@ -78,7 +78,7 @@ Inventario
 
 GET /inventario → Ver inventario
 
-POST /inventario/nueco → Agregar producto al inventario
+POST /inventario/nuevo → Agregar producto al inventario
 
 DELETE /eliminar/:id → Eliminar producto del inventario
 
